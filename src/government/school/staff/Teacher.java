@@ -1,5 +1,8 @@
 package government.school.staff;
 import government.Person;
+import government.school.Course;
+import government.school.Timetable;
+
 import java.util.ArrayList;
 
 public class Teacher extends Employee {
@@ -10,14 +13,22 @@ public class Teacher extends Employee {
     private Timetable timetable;
 
     // Constructor for Teacher Class
-    public Teacher(int intAge, String strName, String[] shiftInterval,
+    public Teacher(int intAge, String strName, String strPassword, String strDepartment, String[] shiftInterval,
                    int intYearsEmployed, double dblAnnualSalary, boolean[] blnStatus,
                    String strTeachingCertification, ArrayList<Course> subjectsTaught, Timetable
                            timetable){
-        super(intAge, strName, shiftInterval, intYearsEmployed, dblAnnualSalary, blnStatus);
+        super(intAge, strName, strPassword, strDepartment, shiftInterval, intYearsEmployed, dblAnnualSalary, blnStatus);
         setTeachingCertification(strTeachingCertification);
         setSubjectsTaught(subjectsTaught);
         setTimetable(timetable);
+        setDepartment(strDepartment);
+    }
+
+    private void setSubjectsTaught(ArrayList<Course> subjectsTaught) {
+        if (subjectsTaught == null)
+            throw new NullPointerException("subjectsTaught cannot be null");
+
+        this.subjectsTaught = subjectsTaught;
     }
 
     // Getter Methods
@@ -26,9 +37,9 @@ public class Teacher extends Employee {
         return this.strTeachingCertification;
     }
 
-    public ArrayList<Course> getCoursesTaught(){
+    public ArrayList<Course> getSubjectsTaught(){
         // Cloning the returned object to prevent unintended modification since it is a reference to the original
-        return this.coursesTaught.clone();
+        return this.subjectsTaught; /******************************/
     }
 
     public Timetable getTimetable(){
@@ -39,20 +50,15 @@ public class Teacher extends Employee {
     // Setter Methods
 
     public void setTeachingCertification(String strTeachingCertification){
-        if (strTeachingCertification != null && strTeachingCeritifcation.length() > 0){
+        if (strTeachingCertification != null && !strTeachingCertification.isEmpty()){
             this.strTeachingCertification = strTeachingCertification;
-        }
+        } else
+            throw new NullPointerException("strTeachingCertification cannot be null");
     }
 
-    public void setCoursesTaught(ArrayList<Course> coursesTaught){
-        if (coursesTaught != null & coursesTaught.size > 0){
-            // Cloning the assigned object to prevent unintended modification since it is a reference to the original
-            this.coursesTaught = coursesTaught.clone();
-        }
-    }
 
     public void setTimetable(Timetable timetable){
-        if (timetable != null && timetable.getCourses().length == 4){
+        if (timetable != null && timetable.getTt().length == 4){
             // Cloning the assigned object to prevent unintended modification since it is a reference to the original
             this.timetable = timetable.clone();
         }

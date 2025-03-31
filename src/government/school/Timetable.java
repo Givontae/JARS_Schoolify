@@ -10,6 +10,9 @@ public class Timetable {
     private CourseSection[] tt;
     private int MAX_COURSES = 4;
 
+    public CourseSection[] getTt() {
+        return this.tt;
+    }
 
     public void removeCourse(Student student, CourseSection course) {
         if (course == null)

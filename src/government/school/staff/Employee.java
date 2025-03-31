@@ -22,7 +22,7 @@ public abstract class Employee extends Person implements Cloneable {
 
 
     // Constructor for Employee Class
-    public Employee(int intAge, String strName, String strDepartment, String[] strShiftInterval,
+    public Employee(int intAge, String strName, String strPassword, String strDepartment, String[] strShiftInterval,
                     int intYearsEmployed, double dblAnnualSalary, boolean[] blnStatus){
         super(intAge, strName);
         setDepartment(strDepartment);
@@ -30,6 +30,7 @@ public abstract class Employee extends Person implements Cloneable {
         setYearsEmployed(intYearsEmployed);
         setAnnualSalary(dblAnnualSalary);
         setStatus(blnStatus);
+        setPassword(strPassword);
 
         this.EMPLOYEE_ID = Auth.generateID();
         setPassword();

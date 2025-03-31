@@ -36,10 +36,4 @@ public class Counsellor extends Employee {
         }
     }
 
-    // Overridden Methods from the Employee Superclass
-    @Override
-    public String toString(){
-        return "Position: Counsellor\n" + super.toString() + "\Counselling Certification: "
-                + strCounsellingCertification + "\nCounsellor Alpha: " + strCounsellorAlpha;
-    }
 }

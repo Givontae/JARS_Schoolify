@@ -7,11 +7,13 @@ public class Administrator extends Employee implements EmployeeManageable {
     private double dblSchoolBudget;
 
     // Constructor for Administrator Class
-    public Administrator(int intAge, String strName, String[] shiftInterval,
+    public Administrator(int intAge, String strName, String strPassword, String strDepartment, String[] shiftInterval,
                          int intYearsEmployed, double dblAnnualSalary, boolean[] blnStatus,
                          double dblSchoolBudget){
-        super(intAge, strName, "Admin", shiftInterval, intYearsEmployed, dblAnnualSalary, blnStatus);
+        super(intAge, strName, strPassword, strDepartment, shiftInterval, intYearsEmployed, dblAnnualSalary, blnStatus);
         setSchoolBudget(dblSchoolBudget);
+        setDepartment(strDepartment);
+        setPassword(strPassword);
     }
 
     // Getter Method
@@ -35,8 +37,9 @@ public class Administrator extends Employee implements EmployeeManageable {
     }
 
     public void hireEmployee(Employee employee){
-        Employee.setEmployees(Employee.getEmployees().add(employee));
+        //Employee.setEmployees(Employee.getEmployees().add(employee));
     }
+
 
     // Overridden Methods from the Employee Superclass
     @Override
