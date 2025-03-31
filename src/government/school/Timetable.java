@@ -8,6 +8,7 @@ import java.util.Arrays;
 public class Timetable {
 
     private CourseSection[] tt;
+    private int MAX_COURSES = 4;
 
 
     public void removeCourse(Student student, CourseSection course) {
