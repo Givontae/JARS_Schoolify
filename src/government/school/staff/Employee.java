@@ -4,7 +4,7 @@ import government.school.util.Auth;
 
 import java.util.ArrayList;
 
-public abstract class Employee extends Person {
+public abstract class Employee extends Person implements Cloneable {
 
     // Fields
     private final int EMPLOYEE_ID;
@@ -63,31 +63,6 @@ public abstract class Employee extends Person {
         return this.blnStatus.clone();
     }
 
-    //HERE!!
-    public static ArrayList<Employee> getEmployees() {
-        ArrayList<Employee> clonedList = new ArrayList<>();
-        for (Employee employee : employees) {
-            clonedList.add(employee.clone());  // assuming Employee has a properly implemented clone method
-        }
-        return clonedList;
-    }
-
-    @Override
-    public Employee clone() {
-        try {
-            Employee clonedEmployee = (Employee) super.clone();  // Clone the object (shallow clone)
-
-            // Clone the arrays (deep clone)
-            clonedEmployee.strShiftInterval = this.strShiftInterval.clone();
-            clonedEmployee.blnStatus = this.blnStatus.clone();
-
-            // Return the cloned object
-            return clonedEmployee;
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();  // If cloning is not supported (which shouldn't happen here)
-            return null;
-        }
-    }
 
 
     // Setter Methods
@@ -95,14 +70,16 @@ public abstract class Employee extends Person {
         this.strPassword = Auth.generatePassword(8);
     }
 
-    public void setPassword(int strPassword) {
-        if (strPassword == 8){
-            this.strPassword = strPassword;
-        }
+    public void setPassword(String strPassword) {
+        if (strPassword == null || strPassword.length() <= 8)
+            throw new IllegalArgumentException("Password must be at least 8 characters");
+
+        this.strPassword = strPassword;
+
     }
 
     public void setDepartment(String strDepartment){
-        if (strDepartment != null && validateDepartment(strDepartment)){
+        if (/*strDepartment != null && */validateDepartment(strDepartment)){
             this.strDepartment = strDepartment;
         }
     }
@@ -139,16 +116,10 @@ public abstract class Employee extends Person {
         }
     }
 
-    public static void setEmployees(ArrayList<Employee> xemployees){
-        if (employees != null && employees.size() > 0){
-            employees = xemployees.clone();
-        }
-    }
-
     // Helper Methods
 
     private boolean validateDepartment(String strTarget){
-        if (strTarget == null || strTarget.length() == 0){
+        if (strTarget == null || strTarget.isEmpty()){
             return false;
         }
 
@@ -166,14 +137,51 @@ public abstract class Employee extends Person {
 
         if (blnStatus != null && blnStatus.length == 3){
             for (boolean element: blnStatus){
-                if (element == true) trueCount++;
+                if (element) trueCount++;
             }
         }
 
-        if (trueCount == 1) return true;
-
-        return false;
+        return (trueCount == 1);
     }
+
+    // Updated getEmployees() method
+    public static ArrayList<Employee> getEmployees() {
+        if (employees == null) {
+            employees = new ArrayList<>();
+        }
+        ArrayList<Employee> clonedList = new ArrayList<>();
+        for (Employee employee : employees) {
+            clonedList.add(employee.clone());
+        }
+        return clonedList;
+    }
+
+    // Updated setEmployees() method
+    public static void setEmployees(ArrayList<Employee> newEmployees) {
+        if (newEmployees == null) {
+            throw new IllegalArgumentException("Employee list cannot be null.");
+        }
+        employees = new ArrayList<>();
+        for (Employee employee : newEmployees) {
+            employees.add(employee.clone());
+        }
+    }
+
+    // Updated clone() method
+    @Override
+    public Employee clone() {
+        try {
+            // Perform shallow cloning via super.clone()
+            Employee clonedEmployee = (Employee) super.clone();
+            // Deep clone mutable array fields
+            clonedEmployee.strShiftInterval = (this.strShiftInterval != null) ? this.strShiftInterval.clone() : null;
+            clonedEmployee.blnStatus = (this.blnStatus != null) ? this.blnStatus.clone() : null;
+            return clonedEmployee;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError("Cloning not supported", e);
+        }
+    }
+
 
     /*
     // STORAGE METHOD(S)
